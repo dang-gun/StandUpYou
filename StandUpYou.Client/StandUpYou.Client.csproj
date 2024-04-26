@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StandUpYou.Global\StandUpYou.Global.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="DG_SocketAssist6.Client">
       <HintPath>..\OutLibrary\DG_SocketAssist6\LibRelease\DG_SocketAssist6.Client.dll</HintPath>
     </Reference>

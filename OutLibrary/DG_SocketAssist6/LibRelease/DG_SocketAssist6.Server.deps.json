@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "DG_SocketAssist6.Server/1.0.0": {
+        "dependencies": {
+          "DG_SocketAssist6.Global": "1.0.0"
+        },
+        "runtime": {
+          "DG_SocketAssist6.Server.dll": {}
+        }
+      },
+      "DG_SocketAssist6.Global/1.0.0": {
+        "runtime": {
+          "DG_SocketAssist6.Global.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "DG_SocketAssist6.Server/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "DG_SocketAssist6.Global/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using StandUpYou.Server.Configs;
 using StandUpYou.Server.Faculty;
-using StandUpYou.Server.Faculty.Server;
 using StandUpYou.Server.Global;
 using System.Text.Json.Serialization;
 
@@ -19,7 +18,7 @@ internal class Program
         bool bSuccess = true;
 
         //서버 리스너
-        MyServer server;
+        ServerModel server;
 
         if (true == bSuccess)
         {
@@ -44,7 +43,11 @@ internal class Program
 
         if (true == bSuccess)
         {
-            server = new MyServer(GlobalStatic.ServerCfg.ServicePort);
+            GlobalStatic.MainForm = new ConsoleUi();
+
+
+            server = new ServerModel();
+            server.Start(GlobalStatic.ServerCfg.ServicePort);
 
         }
 

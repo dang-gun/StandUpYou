@@ -1,2 +1,6 @@
 {
+  //응답을 대기할 포트
+  "ServicePort": "7000",
+  //접속된 클라이언트들에게 일어서기 명령을 보낼 주기(ms)
+  "StandUpCallInterval": 10000
 }

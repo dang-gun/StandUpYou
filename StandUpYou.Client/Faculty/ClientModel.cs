@@ -1,12 +1,11 @@
 ﻿using DG_SocketAssist6.Client;
+using GameLoopProc;
 using StandUpYou.Client.Global;
 using StandUpYou.Global;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace StandUpYou.Client.Faculty
 {
@@ -25,14 +24,21 @@ namespace StandUpYou.Client.Faculty
         private ClientSocket? ClientMy;
 
         /// <summary>
+        /// 사용할 게임 루프
+        /// </summary>
+        private GameLoopStopwatch GameLoop;
+
+        /// <summary>
         /// 사용할 아이디
         /// </summary>
         public string Id { get; private set; } = string.Empty;
 
+#pragma warning disable CS8618 // 생성자를 종료할 때 null을 허용하지 않는 필드에 null이 아닌 값을 포함해야 합니다. null 허용으로 선언해 보세요.
         public ClientModel()
         {
             
         }
+#pragma warning restore CS8618 // 생성자를 종료할 때 null을 허용하지 않는 필드에 null이 아닌 값을 포함해야 합니다. null 허용으로 선언해 보세요.
 
         /// <summary>
         /// 서버 연결 시작
@@ -58,7 +64,14 @@ namespace StandUpYou.Client.Faculty
             this.ClientMy.ConnectServer();
         }
 
-        
+        public async Task StartLoop()
+        {
+            this.GameLoop = new GameLoopStopwatch(60);
+
+            //게임 루프 시작 - 프로그램 스래드 대기
+            await this.GameLoop.Start();
+        }
+
 
         /// <summary>
         /// 접속 끊기
@@ -75,9 +88,9 @@ namespace StandUpYou.Client.Faculty
         #region 클라이언트 이벤트 콜백
         private void ClientMy_OnLog(int nLogType, string sMessage)
         {
-            this.Log(string.Format("[Client:{0}] {1}"
-                        , nLogType
-                        , sMessage));
+            //this.Log(string.Format("[Client:{0}] {1}"
+            //            , nLogType
+            //            , sMessage));
         }
 
         /// <summary>
@@ -99,7 +112,7 @@ namespace StandUpYou.Client.Faculty
         private void Client_OnDisconnect(ClientSocket sender)
         {
             this.Log("*** 서버 끊김 ***");
-            GlobalStatic.MainForm!.UI_Setting(ConsoleUi.typeState.Disconnect);
+            GlobalStatic.MainForm!.UI_Setting(ConsoleUi.UiStateType.Disconnect);
         }
         /// <summary>
         /// 서버와 끊김 처리가 완료됨
@@ -130,8 +143,8 @@ namespace StandUpYou.Client.Faculty
             //원본 데이터를 문자열로 바꾼다.
             string sDataOri = Encoding.UTF8.GetString(byteData);
 
-            this.Log(string.Format("[Client_OnMessaged] {0}"
-                                    , sDataOri));
+            //this.Log(string.Format("[Client_OnMessaged] {0}"
+            //                        , sDataOri));
 
             //구분자로 명령을 구분 한다.
             string[] sData = GlobalStatic.ChatCmd.ChatCommandCut(sDataOri);
@@ -155,22 +168,16 @@ namespace StandUpYou.Client.Faculty
 
                     case ChatCommandType.Client_Ready:
                         //로그인 시작
+                        this.Log($"[Client_OnMessaged] SignIn : {this.Id}");
                         this.SendMsg(ChatCommandType.SignIn, this.Id);
                         break;
                     case ChatCommandType.SignIn_Ok:
                         this.Log("사인인 성공 : " + this.Id);
-                        GlobalStatic.MainForm!.UI_Setting(ConsoleUi.typeState.Connect);
+                        GlobalStatic.MainForm!.UI_Setting(ConsoleUi.UiStateType.Connect);
                         break;
                     case ChatCommandType.SignIn_Fail:
                         this.Log("사인인 실패 : " + this.Id);
-                        GlobalStatic.MainForm!.UI_Setting(ConsoleUi.typeState.None);
-                        break;
-
-                    case ChatCommandType.User_Connect:   //다른 유저가 접속 했다.
-                        break;
-                    case ChatCommandType.User_Disonnect: //다른 유저가 접속을 끊었다.
-                        break;
-                    case ChatCommandType.User_List:  //유저 리스트 갱신
+                        GlobalStatic.MainForm!.UI_Setting(ConsoleUi.UiStateType.None);
                         break;
                 }
             }
@@ -193,7 +200,7 @@ namespace StandUpYou.Client.Faculty
                         typeChatCommand
                         , sMessage);
 
-            this.Log($"메시지 보내기 요청 : {sToss}");
+            //this.Log($"메시지 보내기 요청 : {sToss}");
 
             //원본 데이터를 문자열로 바꾼다.
             byte[] byteDataOri = Encoding.UTF8.GetBytes(sToss);

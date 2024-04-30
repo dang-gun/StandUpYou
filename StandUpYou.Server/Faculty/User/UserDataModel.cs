@@ -171,10 +171,6 @@ namespace StandUpYou.Server.Faculty.User
                     case ChatCommandType.SignIn:   //아이디 체크
                         this.SendMeg_Main(typeCommand, sData[1]);
                         break;
-
-                    case ChatCommandType.User_List_Get:  //유저리스트 갱신 요청
-                        this.SendMeg_Main(typeCommand, "");
-                        break;
                 }
             }
         }

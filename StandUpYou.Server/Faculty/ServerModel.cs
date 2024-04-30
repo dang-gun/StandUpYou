@@ -5,12 +5,23 @@ using DG_SocketAssist6.Server;
 using StandUpYou.Server.Faculty.User;
 using StandUpYou.Server.Global;
 using System.Text;
+using GameLoopProc;
+using System.Timers;
 
 namespace StandUpYou.Server.Faculty
 {
     internal class ServerModel
     {
+        /// <summary>
+        /// 사용할 서버 소켓
+        /// </summary>
         private ServerSocket Server;
+
+        /// <summary>
+        /// 사용할 게임 루프
+        /// </summary>
+        private GameLoopStopwatch GameLoop;
+
 
         /// <summary>
         /// 관리할 유저 리스트
@@ -26,8 +37,9 @@ namespace StandUpYou.Server.Faculty
 
         /// <summary>
         /// 서버 시작
+        /// <para>루프는 하지 안으므로 루프를 하려면 Start를 호출해야 한다.</para>
         /// </summary>
-        public void Start(int nPort)
+        public void StartServer(int nPort)
         {
             //서버 개체 생성
             this.Server = new ServerSocket(nPort);
@@ -44,15 +56,34 @@ namespace StandUpYou.Server.Faculty
 
 
             this.Server.Start();
+            Console.WriteLine("★★★★ Server ready");
         }
 
-        
+        public void StartLoop()
+        {
+            this.GameLoop = new GameLoopStopwatch(60);
+
+            //게임 루프 시작 - 프로그램 스래드 대기
+            this.GameLoop.Start().Wait();
+        }
+
+
         /// <summary>
         /// 서버 종료
         /// </summary>
-        public void Stop()
+        public void StopServer()
         {
             this.Server.Stop();
+            this.GameLoop.Stop();
+        }
+
+        /// <summary>
+        /// Update가 호출되면 호출되는 함수
+        /// <para>Update는 온전히 게임 루프 관련 처리만 하도록 함수를 분리한다.</para>
+        /// </summary>
+        public void UpdateLoop()
+        {
+            //this.KeyPress(Console.ReadKey());
         }
 
 
@@ -66,9 +97,9 @@ namespace StandUpYou.Server.Faculty
         /// <exception cref="System.NotImplementedException"></exception>
         private void Server_OnLog(int nLogType, string sMessage)
         {
-            this.Log(string.Format("[server:{0}] {1}"
-                                    , nLogType
-                                    , sMessage));
+            //this.Log(string.Format("[server:{0}] {1}"
+            //                        , nLogType
+            //                        , sMessage));
         }
 
         /// <summary>
@@ -103,10 +134,9 @@ namespace StandUpYou.Server.Faculty
             this.UserListUi_Remove(sName);
             //리스트에서 제거
             this.UserList.UserList_Remove(sender);
-            
 
-            //끊어진 대상을 알려줌
-            this.Send_All(ChatCommandType.User_Disonnect, sName);
+            this.Log($"[Server_OnDisconnect] {sName}");
+            this.Log($"[Server_OnDisconnect] Total : {this.UserList.UserCount}");
         }
 
         /// <summary>
@@ -124,9 +154,9 @@ namespace StandUpYou.Server.Faculty
 
         private void UserList_OnLog(int nLogType, string sMessage)
         {
-            this.Log(string.Format("[UserList:{0}] {1}"
-                        , nLogType
-                        , sMessage));
+            //this.Log(string.Format("[UserList:{0}] {1}"
+            //            , nLogType
+            //            , sMessage));
         }
 
 
@@ -142,9 +172,9 @@ namespace StandUpYou.Server.Faculty
         {
 
 
-            this.Log(string.Format("[UserList_OnMessaged] {0} : {1}"
-                                    , typeCommand
-                                    , sMag));
+            //this.Log(string.Format("[UserList_OnMessaged] {0} : {1}"
+            //                        , typeCommand
+            //                        , sMag));
 
             StringBuilder sbMsg = new StringBuilder();
 
@@ -156,9 +186,6 @@ namespace StandUpYou.Server.Faculty
 
                 case ChatCommandType.SignIn:   //id체크
                     this.Commd_SignIn(sender, sMag);
-                    break;
-                case ChatCommandType.User_List_Get:  //유저 리스트 갱신 요청
-                    this.Commd_User_List_Get(sender);
                     break;
             }
         }
@@ -224,8 +251,8 @@ namespace StandUpYou.Server.Faculty
                 this.UserList.UserCheckOk(sender);
                 this.UserListUi_Add(sender.UserName);
 
-                //접속한 유저를 제외하고 전체를 유제에게 알린다.
-                this.Send_All(sender, ChatCommandType.User_Connect, sender.UserName);
+                this.Log($"[Commd_SignIn] {sender.UserName}");
+                this.Log($"[Commd_SignIn] Total : {this.UserList.UserCount}");
             }
             else
             {
@@ -241,30 +268,6 @@ namespace StandUpYou.Server.Faculty
                 //유저 체크 실패
                 this.UserList.UserCheckFail(sender);
             }
-        }
-
-        /// <summary>
-        /// 유저 리스트 요청 처리
-        /// </summary>
-        /// <param name="sender">요청자</param>
-        private void Commd_User_List_Get(UserDataModel sender)
-        {
-            StringBuilder sbList = new StringBuilder();
-
-            //리스트 만들기
-            foreach (string sItem in this.UserList.UserNameList)
-            {
-                sbList.Append(sItem);
-                sbList.Append(",");
-            }
-
-            string sSendData
-                = GlobalStatic.ChatCmd
-                    .ChatCommandString(
-                        ChatCommandType.User_List
-                        , sbList.ToString());
-
-            sender.SendMsg_User(sSendData);
         }
 
         #endregion

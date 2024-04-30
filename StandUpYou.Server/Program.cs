@@ -12,7 +12,7 @@ internal class Program
 
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, Stand Up You(internal network check tool)");
+        Console.WriteLine("Hello, Stand Up You(internal network check tool) - Server");
 
         //처리 성공여부
         bool bSuccess = true;
@@ -46,14 +46,17 @@ internal class Program
             GlobalStatic.MainForm = new ConsoleUi();
 
 
+            //서버 개체
             server = new ServerModel();
-            server.Start(GlobalStatic.ServerCfg.ServicePort);
-
+            //서버 시작
+            server.StartServer(GlobalStatic.ServerCfg.ServicePort);
+            //게임루프 시작
+            server.StartLoop();
         }
 
 
-
-
+        Console.WriteLine(" ");
+        Console.WriteLine(" ");
         Console.WriteLine("------- Press 'R' to exit the program ------");
 
         ConsoleKeyInfo keyinfo;

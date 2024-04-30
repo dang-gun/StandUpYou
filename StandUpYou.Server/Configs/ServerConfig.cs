@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace StandUpYou.Server.Configs;
 
 /// <summary>
@@ -15,7 +10,7 @@ internal class ServerConfig
     /// 응답을 대기할 포트
     /// <para>기본값 5000</para>
     /// </summary>
-    public int ServicePort { get; set; } = 5000;
+    public int ServicePort { get; set; } = 7000;
 
     /// <summary>
     /// 접속된 클라이언트들에게 일어서기 명령을 보낼 주기(ms)

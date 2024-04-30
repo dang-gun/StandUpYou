@@ -11,7 +11,7 @@ internal class ConsoleUi
     /// <summary>
     /// 나의 상태
     /// </summary>
-    public enum typeState
+    public enum UiStateType
     {
         /// <summary>
         /// 없음
@@ -35,7 +35,7 @@ internal class ConsoleUi
     /// <summary>
     /// 나의 상태
     /// </summary>
-    private typeState m_typeState = typeState.None;
+    private UiStateType m_typeState = UiStateType.None;
 
     public ConsoleUi()
     { 
@@ -50,23 +50,23 @@ internal class ConsoleUi
     /// UI 세팅
     /// </summary>
     /// <param name="typeSet"></param>
-    public void UI_Setting(typeState typeSet)
+    public void UI_Setting(UiStateType typeSet)
     {
         //들어온 값을 세팅하고
         m_typeState = typeSet;
 
         switch (typeSet)
         {
-            case typeState.None://기본
-            case typeState.Disconnect: //끊김
+            case UiStateType.None://기본
+            case UiStateType.Disconnect: //끊김
 
                 //처음으로 돌리기위해 typeState.None로 초기화 한다.
-                m_typeState = typeState.None;
+                m_typeState = UiStateType.None;
                 break;
 
-            case typeState.Connecting:  //연결중
+            case UiStateType.Connecting:  //연결중
                 break;
-            case typeState.Connect: //연결완료
+            case UiStateType.Connect: //연결완료
                 break;
         }
     }

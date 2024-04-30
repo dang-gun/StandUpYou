@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="DGU_GameLoop">
+      <HintPath>..\OutLibrary\DGU_GameLoop\LibRelease\DGU_GameLoop.dll</HintPath>
+    </Reference>
     <Reference Include="DG_SocketAssist6.Server">
       <HintPath>..\OutLibrary\DG_SocketAssist6\LibRelease\DG_SocketAssist6.Server.dll</HintPath>
     </Reference>
@@ -23,6 +26,12 @@
 
   <ItemGroup>
     <Folder Include="Configs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Configs\ServerConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

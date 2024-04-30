@@ -43,23 +43,21 @@ public enum ChatCommandType
 
 
     /// <summary>
-    /// [S->C] 접속한 유저가 있다.
-    /// <para>사인인 까지 완료하여 다른 유저에게 접속자를 알리는 상태</para>
+    /// [S->C] 조금있으면 일어서기 명령을 보낼것이니 준비해달라고 요청한다.
+    /// <para>MayI have your attention, please</para>
     /// </summary>
-    User_Connect,
-    /// <summary>
-    /// [S->C] 접속을 끊은 유저가 있다.
-    /// </summary>
-    User_Disonnect,
-    /// <summary>
-    /// [S->C] 유저 리스트를 보낸다.
-    /// </summary>
-    User_List,
-    /// <summary>
-    /// [C->S] 유저 리스트를 갱신을 요청 한다.
-    /// </summary>
-    User_List_Get,
+    AttentionPlease,
 
+    /// <summary>
+    /// [S->C] 일어서기 요청
+    /// <para>please stand up</para>
+    /// </summary>
+    PleaseStandUp,
+
+    /// <summary>
+    /// [C->S] 일어서기 요청에 응답하여 일어났다고 알림
+    /// </summary>
+    GetUp,
 
 
     /// <summary>

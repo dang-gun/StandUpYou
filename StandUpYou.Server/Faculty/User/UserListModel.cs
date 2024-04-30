@@ -139,11 +139,6 @@ namespace StandUpYou.Server.Faculty.User
             sender.ClientIndex = ++this.ClientIndexCount;
 
             this.OnLogCall(0, "접속 허가 완료 : " + sender.UserName);
-
-            this.OnMessagedCall(
-                sender
-                , ChatCommandType.User_Connect
-                , sender.UserName);
         }
 
         public void UserCheckFail(UserDataModel sender)

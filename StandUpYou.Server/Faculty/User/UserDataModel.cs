@@ -1,12 +1,9 @@
-﻿
+﻿using System.Text;
+
 using DG_SocketAssist6.Server;
+
 using StandUpYou.Global;
 using StandUpYou.Server.Global;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StandUpYou.Server.Faculty.User
 {

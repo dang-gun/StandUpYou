@@ -138,7 +138,7 @@ namespace StandUpYou.Server.Faculty.User
             //접속허가가 나면 겹치지 않는 고유번호를 할당해 준다.
             sender.ClientIndex = ++this.ClientIndexCount;
 
-            this.OnLogCall(0, "접속 허가 완료 : " + sender.UserName);
+            this.OnLogCall(0, $"접속 허가 완료 : {sender.UserName}({sender.ClientMe.Ip})" );
         }
 
         public void UserCheckFail(UserDataModel sender)

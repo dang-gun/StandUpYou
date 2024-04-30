@@ -44,7 +44,7 @@ public enum ChatCommandType
 
     /// <summary>
     /// [S->C] 조금있으면 일어서기 명령을 보낼것이니 준비해달라고 요청한다.
-    /// <para>MayI have your attention, please</para>
+    /// <para>May I have your attention, please</para>
     /// </summary>
     AttentionPlease,
 
